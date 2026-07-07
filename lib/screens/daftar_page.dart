@@ -59,7 +59,7 @@ class _DaftarPageState extends State<DaftarPage>
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/register.php'), // Untuk web Chrome
+        Uri.parse('https://ahmad2711.rf.gd/api/register.php'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nama': _namaController.text,

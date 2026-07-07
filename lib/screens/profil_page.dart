@@ -37,7 +37,7 @@ class _ProfilPageState extends State<ProfilPage> {
   Future<void> _loadData() async {
     if (_userId == null) return;
     try {
-      final response = await http.get(Uri.parse('http://localhost/api/profil.php?user_id=$_userId'));
+      final response = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/profil.php?user_id=$_userId'));
       final data = jsonDecode(response.body);
       if (data['success']) {
         final p = data['profil'];
@@ -61,7 +61,7 @@ class _ProfilPageState extends State<ProfilPage> {
     if (_userId == null) return;
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/profil.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/profil.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nama': _namaController.text,

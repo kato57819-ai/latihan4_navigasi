@@ -33,7 +33,7 @@ class _LaporanTugasPageState extends State<LaporanTugasPage> {
     if (_userId == null) return;
     
     try {
-      final response = await http.get(Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'));
+      final response = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success']) {
@@ -53,7 +53,7 @@ class _LaporanTugasPageState extends State<LaporanTugasPage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'id': tugasId,

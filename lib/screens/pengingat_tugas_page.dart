@@ -57,7 +57,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     // Load MataKuliah from API
     try {
-      final mkResponse = await http.get(Uri.parse('http://localhost/api/mk.php?user_id=$_userId'));
+      final mkResponse = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/mk.php?user_id=$_userId'));
       if (mkResponse.statusCode == 200) {
         final mkData = jsonDecode(mkResponse.body);
         if (mkData['success']) {
@@ -70,7 +70,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     // Load Jadwal from API
     try {
-      final jadwalResponse = await http.get(Uri.parse('http://localhost/api/jadwal.php?user_id=$_userId'));
+      final jadwalResponse = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/jadwal.php?user_id=$_userId'));
       if (jadwalResponse.statusCode == 200) {
         final jadwalData = jsonDecode(jadwalResponse.body);
         if (jadwalData['success']) {
@@ -83,7 +83,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     // Load Tugas from API
     try {
-      final tugasResponse = await http.get(Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'));
+      final tugasResponse = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'));
       if (tugasResponse.statusCode == 200) {
         final tugasData = jsonDecode(tugasResponse.body);
         if (tugasData['success']) {
@@ -125,7 +125,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'deskripsi': _tugasController.text,
@@ -208,7 +208,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     try {
       final response = await http.delete(
-        Uri.parse('http://localhost/api/tugas.php?user_id=$_userId&id=$tugasId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId&id=$tugasId'),
       );
 
       if (response.statusCode == 200) {
@@ -237,7 +237,7 @@ class _PengingatTugasPageState extends State<PengingatTugasPage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'id': tugasId,

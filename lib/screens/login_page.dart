@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage>
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/login.php'),
+        Uri.parse('https://ahmad2711.rf.gd/api/login.php'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': _usernameController.text,
@@ -97,157 +97,190 @@ class _LoginPageState extends State<LoginPage>
             opacity: _fade,
             child: SlideTransition(
               position: _slide,
-              child: Container(
-                width: 900,
-                height: 560,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 30,
-                      offset: const Offset(0, 15),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isMobile = constraints.maxWidth < 768;
+                  return Container(
+                    width: isMobile ? double.infinity : 900,
+                    constraints: BoxConstraints(
+                      maxWidth: isMobile ? double.infinity : 900,
+                      maxHeight: isMobile ? double.infinity : 560,
                     ),
-                  ],
-                ),
-                child: Row(
-                  children: [
+                    margin: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 30,
+                          offset: const Offset(0, 15),
+                        ),
+                      ],
+                    ),
+                    child: isMobile
+                        ? SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _buildLoginPanel(context, isMobile),
+                                _buildRegisterPanel(context, isMobile),
+                              ],
+                            ),
+                          )
+                        : Row(
+                            children: [
 
                     /// ================= LEFT PANEL (LOGIN) =================
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(48),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Welcome 👋",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 6),
-                            Text("Silakan login untuk melanjutkan",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.grey[600])),
-
-                            const SizedBox(height: 35),
-
-                            _inputField(
-                              icon: Icons.person_outline,
-                              hint: "Username",
-                              controller: _usernameController,
-                              action: TextInputAction.next,
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            _inputField(
-                              icon: Icons.lock_outline,
-                              hint: "Password",
-                              controller: _passwordController,
-                              isPassword: true,
-                              action: TextInputAction.done,
-                              submit: _login,
-                            ),
-
-                            const SizedBox(height: 10),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text("Lupa password?"),
-                              ),
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            SizedBox(
-                              width: double.infinity,
-                              height: 52,
-                              child: ElevatedButton(
-                                onPressed: _login,
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 8,
-                                  backgroundColor: const Color(0xFF6A85F1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                ),
-                                child: Text("Login",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: _buildLoginPanel(context, false),
                     ),
 
                     /// ================= RIGHT PANEL =================
-                    Container(
-                      width: 360,
-                      padding: const EdgeInsets.all(40),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFF6A85F1), Color(0xFF8FD3F4)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(28),
-                          bottomRight: Radius.circular(28),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Hello, Bro ✨",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                          const SizedBox(height: 12),
-                          Text(
-                            "Belum punya akun? Daftar sekarang dan mulai perjalananmu 🚀",
-                            style: GoogleFonts.poppins(
-                                color: Colors.white70, height: 1.6),
-                          ),
-
-                          const SizedBox(height: 35),
-
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const DaftarPage()),
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.white),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                              child: const Text("Daftar Sekarang",
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _buildRegisterPanel(context, false),
                   ],
                 ),
+                  );
+                },
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLoginPanel(BuildContext context, bool isMobile) {
+    return Padding(
+      padding: EdgeInsets.all(isMobile ? 24 : 48),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Welcome 👋",
+              style: GoogleFonts.poppins(
+                  fontSize: isMobile ? 24 : 34,
+                  fontWeight: FontWeight.bold)),
+          const SizedBox(height: 6),
+          Text("Silakan login untuk melanjutkan",
+              style: GoogleFonts.poppins(
+                  color: Colors.grey[600])),
+
+          const SizedBox(height: 35),
+
+          _inputField(
+            icon: Icons.person_outline,
+            hint: "Username",
+            controller: _usernameController,
+            action: TextInputAction.next,
+          ),
+
+          const SizedBox(height: 20),
+
+          _inputField(
+            icon: Icons.lock_outline,
+            hint: "Password",
+            controller: _passwordController,
+            isPassword: true,
+            action: TextInputAction.done,
+            submit: _login,
+          ),
+
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {},
+              child: const Text("Lupa password?"),
+            ),
+          ),
+
+          const SizedBox(height: 25),
+
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              onPressed: _login,
+              style: ElevatedButton.styleFrom(
+                elevation: 8,
+                backgroundColor: const Color(0xFF6A85F1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text("Login",
+                  style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRegisterPanel(BuildContext context, bool isMobile) {
+    final beginAlignment =
+        isMobile ? Alignment.centerLeft : Alignment.topCenter;
+    final endAlignment =
+        isMobile ? Alignment.centerRight : Alignment.bottomCenter;
+
+    return Container(
+      width: isMobile ? double.infinity : 360,
+      padding: EdgeInsets.all(isMobile ? 24 : 40),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: const [Color(0xFF6A85F1), Color(0xFF8FD3F4)],
+          begin: beginAlignment,
+          end: endAlignment,
+        ),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(isMobile ? 0 : 28),
+          bottomRight: Radius.circular(isMobile ? 0 : 28),
+          topLeft: Radius.circular(isMobile ? 28 : 0),
+          bottomLeft: Radius.circular(isMobile ? 28 : 0),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Hello, Bro ✨",
+              style: GoogleFonts.poppins(
+                  fontSize: isMobile ? 22 : 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
+          const SizedBox(height: 12),
+          Text(
+            "Belum punya akun? Daftar sekarang dan mulai perjalananmu 🚀",
+            style: GoogleFonts.poppins(
+                color: Colors.white70, height: 1.6),
+          ),
+
+          const SizedBox(height: 35),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const DaftarPage()),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.white),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: const Text("Daftar Sekarang",
+                  style: TextStyle(color: Colors.white)),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -34,7 +34,7 @@ class _InputMKPageState extends State<InputMKPage> {
   Future<void> _loadData() async {
     if (_userId == null) return;
     try {
-      final response = await http.get(Uri.parse('http://localhost/api/mk.php?user_id=$_userId'));
+      final response = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/mk.php?user_id=$_userId'));
       final data = jsonDecode(response.body);
       if (data['success']) {
         setState(() {
@@ -67,7 +67,7 @@ class _InputMKPageState extends State<InputMKPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/mk.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/mk.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'nama': _mkController.text}),
       );
@@ -129,7 +129,7 @@ class _InputMKPageState extends State<InputMKPage> {
     final mk = _mataKuliah[index];
     if (mk.id != null && _userId != null) {
       try {
-        final response = await http.delete(Uri.parse('http://localhost/api/mk.php?user_id=$_userId&id=${mk.id}'));
+        final response = await http.delete(Uri.parse('https://ahmad2711.rf.gd/api/mk.php?user_id=$_userId&id=${mk.id}'));
         final data = jsonDecode(response.body);
         if (data['success']) {
           _loadData();

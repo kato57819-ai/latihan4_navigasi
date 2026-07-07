@@ -48,7 +48,7 @@ class _DashboardPageState extends State<DashboardPage> {
     
     setState(() => _loading = true);
     try {
-      final response = await http.get(Uri.parse('http://localhost/api/tugas.php?user_id=$_userId'));
+      final response = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/tugas.php?user_id=$_userId'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['success']) {

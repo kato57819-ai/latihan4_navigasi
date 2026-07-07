@@ -43,7 +43,7 @@ class _AturJadwalPageState extends State<AturJadwalPage> {
     if (_userId == null) return;
     
     try {
-      final resp = await http.get(Uri.parse('http://localhost/api/mk.php?user_id=$_userId'));
+      final resp = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/mk.php?user_id=$_userId'));
       if (resp.statusCode == 200) {
         final data = jsonDecode(resp.body);
         if (data['success']) {
@@ -68,7 +68,7 @@ class _AturJadwalPageState extends State<AturJadwalPage> {
 
     List<Jadwal> jadwalList = [];
     try {
-      final resp = await http.get(Uri.parse('http://localhost/api/jadwal.php?user_id=$_userId'));
+      final resp = await http.get(Uri.parse('https://ahmad2711.rf.gd/api/jadwal.php?user_id=$_userId'));
       if (resp.statusCode == 200) {
         final data = jsonDecode(resp.body);
         if (data['success']) {
@@ -128,7 +128,7 @@ class _AturJadwalPageState extends State<AturJadwalPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/api/jadwal.php?user_id=$_userId'),
+        Uri.parse('https://ahmad2711.rf.gd/api/jadwal.php?user_id=$_userId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'mata_kuliah': _selectedMK,
@@ -159,7 +159,7 @@ class _AturJadwalPageState extends State<AturJadwalPage> {
     if (jadwal.id != null && _userId != null) {
       try {
         final response = await http.delete(
-          Uri.parse('http://localhost/api/jadwal.php?user_id=$_userId&id=${jadwal.id}'),
+          Uri.parse('https://ahmad2711.rf.gd/api/jadwal.php?user_id=$_userId&id=${jadwal.id}'),
         );
 
         if (response.statusCode == 200) {
